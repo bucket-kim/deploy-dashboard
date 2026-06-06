@@ -42,7 +42,7 @@ export const POST = async (request: NextRequest) => {
 
     return NextResponse.json({ success: true, data });
   } catch (error) {
-    console.error("Requst Error: ", error);
+    console.error("Request Error: ", error);
 
     return NextResponse.json({
       error: "Invalid Request",
