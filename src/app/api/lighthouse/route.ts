@@ -10,9 +10,12 @@ export const POST = async (request: NextRequest) => {
     if (!run_id || !run_number) {
       return NextResponse.json({
         error: "run_id and run_number are required",
-        status: 40,
+        status: 400,
       });
     }
+
+    console.log("Supabase URL:", process.env.NEXT_PUBLIC_SUPABASE_URL);
+    console.log("Service key exists:", !!process.env.SUPABASE_SERVICE_ROLE_KEY);
 
     const { data, error } = await supabaseAdmin
       .from("lighthouse_scores")
