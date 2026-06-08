@@ -1,8 +1,10 @@
 'use client'
 
+import CDNStats from "@/components/dashboard/CDNStats";
 import PerformanceChart from "@/components/dashboard/PerformanceChart";
 import RunRow from "@/components/dashboard/RunRow";
 import StatCard from "@/components/dashboard/StatCard";
+import { useCloudWatchMetrics } from "@/hooks/useCloudWatchMetrics";
 import { useLighthouseScores } from "@/hooks/useLighthouseScores";
 import { useWorkflowRuns } from "@/hooks/useWorkflowRuns";
 import { formatDuration } from "@/lib/utils/format";
@@ -11,6 +13,7 @@ export default function Home() {
 
   const { data, isLoading, isError } = useWorkflowRuns();
   const { data: scores } = useLighthouseScores();
+  const { data: cloudWatchData } = useCloudWatchMetrics()
 
   const getScoresForRun = (runNumber: number) => scores?.find(s => s.run_number === runNumber)
 
@@ -40,6 +43,7 @@ export default function Home() {
         </div>
 
         <PerformanceChart score={scores} />
+        <CDNStats metrics={cloudWatchData} />
 
         <div className="grid grid-cols-4 gap-4 mb-8">
           <StatCard label="Total Runs" value={data?.totalRuns ?? 0} />

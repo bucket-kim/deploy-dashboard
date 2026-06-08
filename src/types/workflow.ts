@@ -40,3 +40,15 @@ export interface LighthouseScoresType {
   performance_score: number | null;
   created_at: string;
 }
+
+export interface CloudWatchDataPoint {
+  Timestamp?: Date;
+  Sum?: number;
+  Average?: number;
+  Unit?: string;
+}
+
+export interface CloudWatchMetrics {
+  requests: CloudWatchDataPoint[];
+  cacheHitRate: CloudWatchDataPoint[];
+}
