@@ -1,13 +1,15 @@
 import { formatDuration, formatRelativeTime } from "@/lib/utils/format"
-import { WorkflowRun } from "@/types/workflow"
+import { LighthouseScoresType, WorkflowRun } from "@/types/workflow"
 import Link from "next/link"
 import { FC } from "react"
+import ScoreBadge from "./ScoreBadge";
 
 interface RunRowProps {
-    run: WorkflowRun
+    run: WorkflowRun;
+    score: LighthouseScoresType | undefined;
 }
 
-const RunRow: FC<RunRowProps> = ({ run }) => {
+const RunRow: FC<RunRowProps> = ({ run, score }) => {
 
     const isSuccess = run.conclusion === 'success'
     const isInProgress = run.status === 'in_progress';
@@ -25,6 +27,42 @@ const RunRow: FC<RunRowProps> = ({ run }) => {
                     #{run.runNumber}
                 </span>
                 <span className="text-zinc-500 text-sm">{conclusionLabel}</span>
+            </div>
+
+            <div>
+                {score ? (
+                    <div>
+                        <ScoreBadge
+                            label="LCP"
+                            value={score.lcp}
+                            unit="s"
+                            thresholds={{ good: 2.5, bad: 4 }}
+                            lowerIsBetter={true}
+                        />
+                        <ScoreBadge
+                            label="FID"
+                            value={score.fid}
+                            unit="ms"
+                            thresholds={{ good: 100, bad: 300 }}
+                            lowerIsBetter={true}
+                        />
+                        <ScoreBadge
+                            label="CLS"
+                            value={score.cls}
+                            unit=""
+                            thresholds={{ good: 0.1, bad: 0.25 }}
+                            lowerIsBetter={true}
+                        />
+                        <ScoreBadge
+                            label="Score"
+                            value={score.performance_score}
+                            unit=""
+                            thresholds={{ good: 90, bad: 49 }}
+                            lowerIsBetter={false}
+                        />
+                    </div>
+                ) : (
+                    <span className="text-zinc-700 text-xs font-mono">no scores</span>)}
             </div>
 
             {/* Right side */}

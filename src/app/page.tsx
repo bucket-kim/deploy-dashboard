@@ -1,13 +1,18 @@
 'use client'
 
+import PerformanceChart from "@/components/dashboard/PerformanceChart";
 import RunRow from "@/components/dashboard/RunRow";
 import StatCard from "@/components/dashboard/StatCard";
+import { useLighthouseScores } from "@/hooks/useLighthouseScores";
 import { useWorkflowRuns } from "@/hooks/useWorkflowRuns";
 import { formatDuration } from "@/lib/utils/format";
 
 export default function Home() {
 
   const { data, isLoading, isError } = useWorkflowRuns();
+  const { data: scores } = useLighthouseScores();
+
+  const getScoresForRun = (runNumber: number) => scores?.find(s => s.run_number === runNumber)
 
   const lastRun = data?.runs[0];
 
@@ -34,6 +39,8 @@ export default function Home() {
           </p>
         </div>
 
+        <PerformanceChart score={scores} />
+
         <div className="grid grid-cols-4 gap-4 mb-8">
           <StatCard label="Total Runs" value={data?.totalRuns ?? 0} />
           <StatCard label="Success Rate" value={`${data?.successRate ?? 0}%`} highlight={(data?.successRate ?? 0) >= 80 ? "success" : "failure"} />
@@ -43,7 +50,7 @@ export default function Home() {
 
         <div className="flex flex-col gap-4">
           {data?.runs.map((run) => (
-            <RunRow key={run.id} run={run} />
+            <RunRow key={run.id} run={run} score={getScoresForRun(run.runNumber)} />
           ))}
         </div>
       </div>

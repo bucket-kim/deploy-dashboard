@@ -29,3 +29,14 @@ export interface GitHubWorkflowRun {
   updated_at: string;
   html_url: string;
 }
+
+export interface LighthouseScoresType {
+  id: string;
+  run_id: number;
+  run_number: number;
+  lcp: number | null;
+  fid: number | null;
+  cls: number | null;
+  performance_score: number | null;
+  created_at: string;
+}

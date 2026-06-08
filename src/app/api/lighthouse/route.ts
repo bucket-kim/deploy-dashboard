@@ -50,3 +50,21 @@ export const POST = async (request: NextRequest) => {
     });
   }
 };
+
+export const GET = async () => {
+  const { data, error } = await supabaseAdmin
+    .from("lighthouse_scores")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    return NextResponse.json(
+      {
+        error: "Failed to fetch scores",
+      },
+      { status: 500 },
+    );
+  }
+
+  return NextResponse.json(data);
+};
