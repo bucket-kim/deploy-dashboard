@@ -7,9 +7,10 @@ import ScoreBadge from "./ScoreBadge";
 interface RunRowProps {
     run: WorkflowRun;
     score: LighthouseScoresType | undefined;
+    onRollback: (runId: number) => void;
 }
 
-const RunRow: FC<RunRowProps> = ({ run, score }) => {
+const RunRow: FC<RunRowProps> = ({ run, score, onRollback }) => {
 
     const isSuccess = run.conclusion === 'success'
     const isInProgress = run.status === 'in_progress';
@@ -74,6 +75,9 @@ const RunRow: FC<RunRowProps> = ({ run, score }) => {
                 <span className="text-zinc-500 font-mono">
                     {formatDuration(run.duration)}
                 </span>
+                <button className="cursor-pointer" onClick={() => onRollback(run.id)}>
+                    Rollback
+                </button>
                 <Link
                     href={run.url}
                     target="_blank"

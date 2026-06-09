@@ -19,6 +19,24 @@ export default function Home() {
 
   const lastRun = data?.runs[0];
 
+  const handleRollback = async (runId: number) => {
+
+    const response = await fetch('/api/rollback', {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ run_id: runId })
+    })
+
+    if (!response.ok) {
+      console.error('Rollback failed');
+      return;
+    }
+
+    console.log('Rollback triggered successfully');
+  }
+
   if (isLoading) return (
     <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
       <p className="text-zinc-500 font-mono text-sm">fetching deploys...</p>
@@ -54,7 +72,7 @@ export default function Home() {
 
         <div className="flex flex-col gap-4">
           {data?.runs.map((run) => (
-            <RunRow key={run.id} run={run} score={getScoresForRun(run.runNumber)} />
+            <RunRow key={run.id} run={run} score={getScoresForRun(run.runNumber)} onRollback={handleRollback} />
           ))}
         </div>
       </div>

@@ -8,14 +8,13 @@ export const POST = async (request: NextRequest) => {
     const { run_id, run_number, lcp, fid, cls, performance_score } = body;
 
     if (!run_id || !run_number) {
-      return NextResponse.json({
-        error: "run_id and run_number are required",
-        status: 400,
-      });
+      return NextResponse.json(
+        {
+          error: "run_id and run_number are required",
+        },
+        { status: 400 },
+      );
     }
-
-    console.log("Supabase URL:", process.env.NEXT_PUBLIC_SUPABASE_URL);
-    console.log("Service key exists:", !!process.env.SUPABASE_SERVICE_ROLE_KEY);
 
     const { data, error } = await supabaseAdmin
       .from("lighthouse_scores")
@@ -44,10 +43,12 @@ export const POST = async (request: NextRequest) => {
   } catch (error) {
     console.error("Request Error: ", error);
 
-    return NextResponse.json({
-      error: "Invalid Request",
-      status: 400,
-    });
+    return NextResponse.json(
+      {
+        error: "Invalid Request",
+      },
+      { status: 400 },
+    );
   }
 };
 
