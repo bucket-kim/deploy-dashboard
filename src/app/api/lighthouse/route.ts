@@ -18,7 +18,7 @@ export const POST = async (request: NextRequest) => {
 
     const { data, error } = await supabaseAdmin
       .from("lighthouse_scores")
-      .insert({
+      .upsert({
         run_id,
         run_number,
         lcp,

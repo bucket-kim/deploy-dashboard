@@ -8,9 +8,10 @@ interface RunRowProps {
     run: WorkflowRun;
     score: LighthouseScoresType | undefined;
     onRollback: (runId: number) => void;
+    isRollingBack: boolean
 }
 
-const RunRow: FC<RunRowProps> = ({ run, score, onRollback }) => {
+const RunRow: FC<RunRowProps> = ({ run, score, onRollback, isRollingBack }) => {
 
     const isSuccess = run.conclusion === 'success'
     const isInProgress = run.status === 'in_progress';
@@ -32,7 +33,7 @@ const RunRow: FC<RunRowProps> = ({ run, score, onRollback }) => {
 
             <div>
                 {score ? (
-                    <div>
+                    <div className="hidden md:flex items-center gap-4">
                         <ScoreBadge
                             label="LCP"
                             value={score.lcp}
@@ -68,16 +69,22 @@ const RunRow: FC<RunRowProps> = ({ run, score, onRollback }) => {
 
             {/* Right side */}
             <div className="flex items-center gap-6 text-sm">
-                <span className="text-zinc-500 font-mono">{run.branch}</span>
+                <span className="text-zinc-500 font-mono hidden md:block">{run.branch}</span>
                 <span className="text-zinc-600">
                     {formatRelativeTime(run.createdAt)}
                 </span>
-                <span className="text-zinc-500 font-mono">
+                <span className="text-zinc-600 hidden md:block">
                     {formatDuration(run.duration)}
                 </span>
-                <button className="cursor-pointer" onClick={() => onRollback(run.id)}>
-                    Rollback
-                </button>
+                {run.conclusion === 'success' && (
+                    <button className={`text-xs font-mono px-2 py-1 rounded border transition-colors ${isRollingBack
+                        ? "border-zinc-700 text-zinc-600 cursor-not-allowed"
+                        : "border-zinc-600 text-zinc-400 hover:border-zinc-400 hover:text-zinc-200 cursor-pointer"
+                        }`} onClick={() => onRollback(run.id)} disabled={isRollingBack}>
+                        {isRollingBack ? "Rolling back..." : "Rollback"}
+
+                    </button>
+                )}
                 <Link
                     href={run.url}
                     target="_blank"

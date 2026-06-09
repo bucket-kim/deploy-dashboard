@@ -45,11 +45,11 @@ const PerformanceChart: FC<PerformanceChartProps> = ({ score }) => {
                             />
                             <ReferenceLine y={90} label={{
                                 value: 'Good (90)',
-                                fill: '#10b981',    // green — matches the "good" color
+                                fill: '#5e9eff',    // green — matches the "good" color
                                 position: 'insideTopRight',
                                 fontSize: 12
                             }}
-                                stroke="#10b981" strokeDasharray="3 3" />
+                                stroke="#5e9eff" strokeDasharray="3 3" />
                             <RechartsDevtools />
                         </LineChart>
                     </ResponsiveContainer>
