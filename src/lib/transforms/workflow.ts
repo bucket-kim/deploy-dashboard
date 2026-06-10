@@ -5,8 +5,8 @@ import {
 } from "@/types/workflow";
 
 export const transformWorkflowRun = (raw: GitHubWorkflowRun): WorkflowRun => {
-  const start = new Date(raw.created_at).getTime();
-  const end = new Date(raw.created_at).getTime();
+  const start = new Date(raw.run_started_at ?? raw.created_at).getTime();
+  const end = new Date(raw.updated_at).getTime();
   const duration =
     raw.status === "completed" ? Math.round((end - start) / 1000) : null;
 
@@ -20,6 +20,7 @@ export const transformWorkflowRun = (raw: GitHubWorkflowRun): WorkflowRun => {
     createdAt: raw.created_at,
     updatedAt: raw.updated_at,
     url: raw.html_url,
+
     duration,
   };
 };

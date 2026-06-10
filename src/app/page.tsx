@@ -91,7 +91,7 @@ export default function Home() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
           <h1 className="text-xl font-mono font-bold text-white">
-            Deploy Pipeline
+            Deploy Pipeline Dashboard
           </h1>
           <p className="text-zinc-500 text-sm mt-1">
             monitoring {process.env.NEXT_PUBLIC_GITHUB_REPO}
